@@ -1,61 +1,49 @@
-<h1 align="center">
-  <a href="https://lapce.dev" target="_blank">
-  <img src="extra/images/logo.png" width=200 height=200/><br>
-  Lapce
-  </a>
-</h1>
 
-<h4 align="center">Lightning-fast And Powerful Code Editor</h4>
+Aura Edit (code-editor-Rust)
+What is this?
+Aura Edit is a high-performance code editor built from the ground up in Rust. While most modern editors rely on web technologies, this project uses Floem for the UI and leverages wgpu to handle rendering directly on the GPU. It’s designed using Rope Science to ensure that even massive files remain smooth and responsive.
 
-<div align="center">
-  <a href="https://github.com/lapce/lapce/actions/workflows/ci.yml" target="_blank">
-    <img src="https://github.com/lapce/lapce/actions/workflows/ci.yml/badge.svg" />
-  </a>
-  <a href="https://discord.gg/n8tGJ6Rn6D" target="_blank">
-    <img src="https://img.shields.io/discord/946858761413328946?logo=discord" />
-  </a>
-  <a href="https://docs.lapce.dev" target="_blank">
-      <img src="https://img.shields.io/static/v1?label=Docs&message=docs.lapce.dev&color=blue" alt="Lapce Docs">
-  </a>
-</div>
-<br/>
+I’m currently developing this project to explore high-performance GUI architecture and systems programming.
 
+Quick Start & Installation
+1. Prerequisites
+To build Aura Edit from source, you need the Rust toolchain. If you don't have it yet, install it via rustup.rs.
 
-Lapce (IPA: /læps/) is written in pure Rust, with a UI in [Floem](https://github.com/lapce/floem). It is designed with [Rope Science](https://xi-editor.io/docs/rope_science_00.html) from the [Xi-Editor](https://github.com/xi-editor/xi-editor), enabling lightning-fast computation, and leverages [wgpu](https://github.com/gfx-rs/wgpu) for rendering. More information about the features of Lapce can be found on the [main website](https://lapce.dev) and user documentation can be found on [GitBook](https://docs.lapce.dev/).
+For macOS (M4/M-Series) users:
+Ensure you have the Xcode Command Line Tools installed:
 
-![](https://github.com/lapce/lapce/blob/master/extra/images/screenshot.png?raw=true)
+xcode-select --install
 
-## Features
+2. Building from Source
+Once Rust is installed, you can clone and run the editor immediately:
 
-* Built-in LSP ([Language Server Protocol](https://microsoft.github.io/language-server-protocol/)) support to give you intelligent code features such as: completion, diagnostics and code actions
-* Modal editing support as first class citizen (Vim-like, and toggleable)
-* Built-in remote development support inspired by [VSCode Remote Development](https://code.visualstudio.com/docs/remote/remote-overview). Enjoy the benefits of a "local" experience, and seamlessly gain the full power of a remote system. We also have [Lapdev](https://lap.dev/) which can help manage your remote dev environments. 
-* Plugins can be written in programming languages that can compile to the [WASI](https://wasi.dev/) format (C, Rust, [AssemblyScript](https://www.assemblyscript.org/))
-* Built-in terminal, so you can execute commands in your workspace, without leaving Lapce.
+# Clone the repository
+git clone https://github.com/AabhaJahagirdar/code-editor-Rust.git
+cd code-editor-Rust
 
-## Installation
+# Run in release mode for maximum performance
+cargo run --release
 
-You can find pre-built releases for Windows, Linux and macOS [here](https://github.com/lapce/lapce/releases), or [installing with a package manager](docs/installing-with-package-manager.md).
-If you'd like to compile from source, you can find the [guide](docs/building-from-source.md).
+3. Linux Dependencies
+If you are on Linux, you may need to install the following development libraries:
 
-## Contributing
+libx11-dev
 
-<a href="https://ws.lap.dev/#https://github.com/lapce/lapce" target="_blank">
-      <img src="https://lap.dev/images/open-in-lapdev.svg?version=8" alt="Open in Lapdev">
-</a>
+libwayland-dev
 
-[Lapdev](https://lap.dev/), developed by the Lapce team, is a cloud dev env service similar to GitHub Codespaces. By clicking the button above, you'll be taken to a fully set up Lapce dev env where you can browse the code and start developing. All dependencies are pre-installed, so you can get straight to code.
+libasound2-dev
 
-Guidelines for contributing to Lapce can be found in [`CONTRIBUTING.md`](CONTRIBUTING.md).
+Key Features
+Native GPU Rendering: Uses wgpu for a hardware-accelerated, high-FPS interface.
 
-## Feedback & Contact
+Intelligent Coding: Built-in LSP support provides autocompletion, diagnostics, and code actions.
 
-The most popular place for Lapce developers and users is on the [Discord server](https://discord.gg/n8tGJ6Rn6D).
+Modal Editing: Vim-like modal editing is a first-class citizen and can be toggled easily.
 
-Or, join the discussion on [Reddit](https://www.reddit.com/r/lapce/) where we are just getting started.
+Remote Development: Seamlessly work on remote systems with a local-speed experience.
 
-There is also a [Matrix Space](https://matrix.to/#/#lapce-editor:matrix.org), which is linked to the content from the Discord server.
+WASM Plugin System: Write extensions in any language that compiles to WASI (C, Rust, AssemblyScript).
 
-## License
+Integrated Terminal: Execute commands and manage your workspace without leaving the editor.
 
-Lapce is released under the Apache License Version 2, which is an open source license. You may contribute to this project, or use the code as you please as long as you adhere to its conditions. You can find a copy of the license text here: [`LICENSE`](LICENSE).
+Architecture & TechnologyAura Edit is built on three main pillars:Floem UI: A native Rust UI toolkit that provides the layout and widget system.Rope Science: A data structure that allows for $O(\log n)$ text manipulation, making it superior for large files.WGPU: A cross-platform graphics API that allows the editor to run on Vulkan, Metal, and DirectX.
