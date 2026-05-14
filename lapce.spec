@@ -3,7 +3,7 @@ Version:        0.4.6.{{{ git_dir_version }}}
 Release:        1
 Summary:        Lightning-fast and Powerful Code Editor written in Rust
 License:        Apache-2.0
-URL:            https://github.com/velocirust/velocirust
+URL:            https://github.com/AabhaJahagirdar/VelociRust
 
 VCS:            {{{ git_dir_vcs }}}
 Source:        	{{{ git_dir_pack }}}
