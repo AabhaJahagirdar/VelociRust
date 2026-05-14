@@ -1,5 +1,6 @@
 
-Aura Edit (code-editor-Rust)
+<h1>Velocirust (code-editor-Rust)</h1>
+
 What is this?
 Aura Edit is a high-performance code editor built from the ground up in Rust. While most modern editors rely on web technologies, this project uses Floem for the UI and leverages wgpu to handle rendering directly on the GPU. It’s designed using Rope Science to ensure that even massive files remain smooth and responsive.
 
