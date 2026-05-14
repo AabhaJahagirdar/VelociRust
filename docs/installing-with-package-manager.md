@@ -1,20 +1,20 @@
 ## Installation With Package Manager
 
-Lapce is available in below software repositories:
+Velocirust is available in below software repositories:
 
-[![Packaging status](https://repology.org/badge/vertical-allrepos/lapce.svg)](https://repology.org/project/lapce/versions)
+[![Packaging status](https://repology.org/badge/vertical-allrepos/velocirust.svg)](https://repology.org/project/velocirust/versions)
 
-Lapce is also additionally available via:
+Velocirust is also additionally available via:
 
-- [Flatpak](https://flathub.org/apps/details/dev.lapce.lapce)
-- [Scoop](https://scoop.sh/#/apps?q=lapce)
+- [Flatpak](https://flathub.org/apps/details/dev.velocirust.velocirust)
+- [Scoop](https://scoop.sh/#/apps?q=velocirust)
 
 
-For Fedora Linux, Lapce is (unofficially) available via dnf RPM package manager, using nightly as of 2024.01:
+For Fedora Linux, Velocirust is (unofficially) available via dnf RPM package manager, using nightly as of 2024.01:
 
-- [copr](https://copr.fedorainfracloud.org/coprs/titaniumtown/lapce/)
+- [copr](https://copr.fedorainfracloud.org/coprs/titaniumtown/velocirust/)
 
 ```bash
-sudo dnf copr enable titaniumtown/lapce 
-sudo dnf install lapce
+sudo dnf copr enable titaniumtown/velocirust 
+sudo dnf install velocirust
 ```

@@ -1,7 +1,7 @@
 #:schema ../extra/schemas/color-theme.json
 
 [color-theme]
-name = "Lapce Light"
+name = "Velocirust Light"
 
 [ui]
 font-family = ""
@@ -88,38 +88,38 @@ dim-text = "#A0A1A7"
 "bracket.unpaired" = "$red"
 
 [color-theme.ui]
-"lapce.error" = "#E51400"
-"lapce.warn" = "#E9A700"
-"lapce.dropdown_shadow" = "#B4B4B4"
-"lapce.border" = "#B4B4B4"
-"lapce.scroll_bar" = "#B4B4B4BB"
+"velocirust.error" = "#E51400"
+"velocirust.warn" = "#E9A700"
+"velocirust.dropdown_shadow" = "#B4B4B4"
+"velocirust.border" = "#B4B4B4"
+"velocirust.scroll_bar" = "#B4B4B4BB"
 
-"lapce.button.primary.background" = "#50a14f"
-"lapce.button.primary.foreground" = "$white"
+"velocirust.button.primary.background" = "#50a14f"
+"velocirust.button.primary.foreground" = "$white"
 
 # tab
-"lapce.tab.active.background" = "$primary-background"
-"lapce.tab.active.foreground" = "$text"
-"lapce.tab.active.underline" = "#528BFF"
+"velocirust.tab.active.background" = "$primary-background"
+"velocirust.tab.active.foreground" = "$text"
+"velocirust.tab.active.underline" = "#528BFF"
 
-"lapce.tab.inactive.background" = "#EAEAEB"
-"lapce.tab.inactive.foreground" = "$text"
-"lapce.tab.inactive.underline" = "#528BFF77"
+"velocirust.tab.inactive.background" = "#EAEAEB"
+"velocirust.tab.inactive.foreground" = "$text"
+"velocirust.tab.inactive.underline" = "#528BFF77"
 
-"lapce.tab.separator" = "#B4B4B4"
+"velocirust.tab.separator" = "#B4B4B4"
 
-"lapce.icon.active" = "$text"
-"lapce.icon.inactive" = "$dim-text"
+"velocirust.icon.active" = "$text"
+"velocirust.icon.inactive" = "$dim-text"
 
-"lapce.remote.icon" = "$white"
-"lapce.remote.local" = "#4078F2"
-"lapce.remote.connected" = "#50A14F"
-"lapce.remote.connecting" = "#C18401"
-"lapce.remote.disconnected" = "#E45649"
+"velocirust.remote.icon" = "$white"
+"velocirust.remote.local" = "#4078F2"
+"velocirust.remote.connected" = "#50A14F"
+"velocirust.remote.connecting" = "#C18401"
+"velocirust.remote.disconnected" = "#E45649"
 
-"lapce.plugin.name" = "#444444"
-"lapce.plugin.description" = "$text"
-"lapce.plugin.author" = "#707070"
+"velocirust.plugin.name" = "#444444"
+"velocirust.plugin.description" = "$text"
+"velocirust.plugin.author" = "#707070"
 
 "terminal.cursor" = "$text"
 "terminal.foreground" = "$text"

@@ -7,7 +7,7 @@ variable "XX_VERSION" {
 }
 
 variable "PACKAGE_NAME" {
-  default = RELEASE_TAG_NAME == "nightly" ? "lapce-nightly" : "lapce"
+  default = RELEASE_TAG_NAME == "nightly" ? "velocirust-nightly" : "velocirust"
 }
 
 variable "RELEASE_TAG_NAME" {}
@@ -239,6 +239,6 @@ target "cross-alpine" {
 target "alpine-dev" {
   inherits = ["alpine-3-20"]
   target   = "dev"
-  tags     = ["lapce/lapce:dev"]
+  tags     = ["velocirust/velocirust:dev"]
   output   = ["type=docker"]
 }

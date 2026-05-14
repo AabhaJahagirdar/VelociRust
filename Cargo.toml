@@ -1,33 +1,33 @@
 [package]
-name         = "lapce"
+name         = "velocirust"
 version      = { workspace = true }
 authors      = { workspace = true }
 edition      = { workspace = true }
 license      = { workspace = true }
 rust-version = { workspace = true }
-default-run  = "lapce"
+default-run  = "velocirust"
 
 [dependencies]
-lapce-app   = { path = "./lapce-app" }
-lapce-proxy = { path = "./lapce-proxy" }
+velocirust-app   = { path = "./velocirust-app" }
+velocirust-proxy = { path = "./velocirust-proxy" }
 
 [[bin]]
-name = "lapce"
-path = "lapce-app/src/bin/lapce.rs"
+name = "velocirust"
+path = "velocirust-app/src/bin/velocirust.rs"
 
 [[bin]]
-name = "lapce-proxy"
-path = "lapce-proxy/src/bin/lapce-proxy.rs"
+name = "velocirust-proxy"
+path = "velocirust-proxy/src/bin/velocirust-proxy.rs"
 
 [workspace]
-members = ["lapce-app", "lapce-proxy", "lapce-rpc", "lapce-core"]
+members = ["velocirust-app", "velocirust-proxy", "velocirust-rpc", "velocirust-core"]
 
 [workspace.package]
 version      = "0.4.6"
 edition      = "2024"
 rust-version = "1.87.0"
 license      = "Apache-2.0"
-homepage     = "https://lapce.dev"
+homepage     = "https://velocirust.dev"
 authors      = ["Dongdong Zhou <dzhou121@gmail.com>"]
 
 [workspace.dependencies]
@@ -72,9 +72,9 @@ psp-types = { git = "https://github.com/lapce/psp-types", rev = "f7fea28f59e7b2d
 
 lapce-xi-rope = { version = "0.3.2", features = ["serde"] }
 
-lapce-core  = { path = "./lapce-core" }
-lapce-rpc   = { path = "./lapce-rpc" }
-lapce-proxy = { path = "./lapce-proxy" }
+velocirust-core  = { path = "./velocirust-core" }
+velocirust-rpc   = { path = "./velocirust-rpc" }
+velocirust-proxy = { path = "./velocirust-proxy" }
 
 [workspace.dependencies.floem]
 # path = "../floem"
@@ -92,6 +92,9 @@ features = ["serde"]
 # Temporarily patch lsp-types with a version that adds message-type debug
 lsp-types = { git = "https://github.com/lapce/lsp-types", rev = "feaa1e2ec80975c9dadd400a238ceacf071058e6" }
 regalloc2 = { rev = "5d79e12d0a93b10fc181f4da409b4671dd365228", git = "https://github.com/bytecodealliance/regalloc2" }
+wasmtime = { git = "https://github.com/bytecodealliance/wasmtime", tag = "v11.0.1" }
+wasmtime-wasi = { git = "https://github.com/bytecodealliance/wasmtime", tag = "v11.0.1" }
+wasmtime-runtime = { git = "https://github.com/bytecodealliance/wasmtime", tag = "v11.0.1" }
 
 # cargo vendor issue: https://github.com/rust-lang/cargo/issues/10310
 # dpi comes from winit (source) and muda (crate)
@@ -132,13 +135,13 @@ lto           = true
 codegen-units = 1
 
 # A profile which compiles all (non-workspace) dependencies in release mode
-# but Lapce code in dev mode. This gives a good debugging experience for your
+# but Velocirust code in dev mode. This gives a good debugging experience for your
 # code and fast performance of other people's code. After the initial
 # build subsequent ones are as fast as dev mode builds.
 # See https://doc.rust-lang.org/cargo/reference/profiles.html
 # To use this profile:
 #   cargo build --profile fastdev
-#   cargo run --profile fastdev --bin lapce
+#   cargo run --profile fastdev --bin velocirust
 [profile.fastdev.package."*"]
 opt-level = 3
 

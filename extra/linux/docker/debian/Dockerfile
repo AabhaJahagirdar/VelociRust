@@ -99,16 +99,16 @@ export CARGO_BUILD_TARGET="$(xx-cargo --print-target-triple)"
 
 xx-cargo build \
   --frozen \
-  --package lapce-app \
+  --package velocirust-app \
   --profile release-lto \
   --no-default-features
 
-xx-verify "${CARGO_TARGET_DIR}"/"$(xx-cargo --print-target-triple)"/release-lto/lapce
+xx-verify "${CARGO_TARGET_DIR}"/"$(xx-cargo --print-target-triple)"/release-lto/velocirust
 
 mkdir -p /target
-mv -v "${CARGO_TARGET_DIR}"/"$(xx-cargo --print-target-triple)"/release-lto/lapce /target/
+mv -v "${CARGO_TARGET_DIR}"/"$(xx-cargo --print-target-triple)"/release-lto/velocirust /target/
 
-cargo pkgid | cut -d'#' -f2 | cut -d'@' -f2 | cut -d':' -f2 | tee /target/lapce.version
+cargo pkgid | cut -d'#' -f2 | cut -d'@' -f2 | cut -d':' -f2 | tee /target/velocirust.version
 EOF
 
 WORKDIR /output
@@ -121,27 +121,27 @@ export _PACKAGE_ARCHITECTURE=$(xx-info debian-arch)
 mkdir -v -p ${PACKAGE_NAME}/{etc,usr/{bin,share/{applications,metainfo,pixmaps}},debian}
 cd ${PACKAGE_NAME}
 
-cp '/source/extra/linux/dev.lapce.lapce.desktop' './usr/share/applications/dev.lapce.lapce.desktop'
-cp '/source/extra/linux/dev.lapce.lapce.metainfo.xml' './usr/share/metainfo/dev.lapce.lapce.metainfo.xml'
-cp '/source/extra/images/logo.png' './usr/share/pixmaps/dev.lapce.lapce.png'
+cp '/source/extra/linux/dev.velocirust.velocirust.desktop' './usr/share/applications/dev.velocirust.velocirust.desktop'
+cp '/source/extra/linux/dev.velocirust.velocirust.metainfo.xml' './usr/share/metainfo/dev.velocirust.velocirust.metainfo.xml'
+cp '/source/extra/images/logo.png' './usr/share/pixmaps/dev.velocirust.velocirust.png'
 
-mv '/target/lapce' './usr/bin/'
+mv '/target/velocirust' './usr/bin/'
 
-if [[ "${PACKAGE_NAME}" == "lapce" ]]; then
-  conflicts="lapce-nightly"
+if [[ "${PACKAGE_NAME}" == "velocirust" ]]; then
+  conflicts="velocirust-nightly"
 else
-  conflicts="lapce"
+  conflicts="velocirust"
 fi
 
 case "${RELEASE_TAG_NAME}" in
   nightly-*)
-    version=$(cat /target/lapce.version)
+    version=$(cat /target/velocirust.version)
     commit=$(echo "${RELEASE_TAG_NAME}" | cut -d'-' -f2)
     # date=$(date +%Y%m%d%H%M)
     RELEASE_TAG_NAME="${version}+${commit}"
   ;;
   debug|nightly)
-    version=$(cat /target/lapce.version)
+    version=$(cat /target/velocirust.version)
     date=$(date +%Y%m%d%H%M)
     RELEASE_TAG_NAME="${version}+${date}"
   ;;
@@ -157,10 +157,10 @@ cat <<- EOL > debian/control
 	Maintainer: Jakub Panek <me+debian@panekj.dev>
 	Architecture: ${_PACKAGE_ARCHITECTURE}
 	Description: Lightning-fast and Powerful Code Editor
-	Source: https://lapce.dev
+	Source: https://velocirust.dev
 EOL
 
-depends=$(dpkg-shlibdeps -O -e usr/bin/lapce)
+depends=$(dpkg-shlibdeps -O -e usr/bin/velocirust)
 depends=$(echo "${depends}" | sed 's/shlibs:Depends=//')
 echo "Depends: ${depends}" >> debian/control
 mv debian DEBIAN
@@ -174,10 +174,10 @@ FROM build-base AS dev
 COPY . ./dev
 
 FROM scratch AS binary
-COPY --from=build /output/lapce .
+COPY --from=build /output/velocirust .
 
 FROM scratch AS cross-binary
-COPY --from=build /output/lapce .
+COPY --from=build /output/velocirust .
 
 FROM scratch AS package
 COPY --from=build /output/*.deb .
