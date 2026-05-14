@@ -6,7 +6,7 @@ Velocirust is a high-performance code editor built from the ground up in Rust. W
 
 I’m currently developing this project to explore high-performance GUI architecture and systems programming.
 
-Quick Start & Installation
+<h2>Quick Start & Installation</h2>
 1. Prerequisites
 To build Aura Edit from source, you need the Rust toolchain. If you don't have it yet, install it via rustup.rs.
 
@@ -34,7 +34,7 @@ libwayland-dev
 
 libasound2-dev
 
-Key Features
+<h2>Key Features :</h2>
 Native GPU Rendering: Uses wgpu for a hardware-accelerated, high-FPS interface.
 
 Intelligent Coding: Built-in LSP support provides autocompletion, diagnostics, and code actions.
@@ -47,4 +47,8 @@ WASM Plugin System: Write extensions in any language that compiles to WASI (C, R
 
 Integrated Terminal: Execute commands and manage your workspace without leaving the editor.
 
-Architecture & TechnologyAura Edit is built on three main pillars:Floem UI: A native Rust UI toolkit that provides the layout and widget system.Rope Science: A data structure that allows for $O(\log n)$ text manipulation, making it superior for large files.WGPU: A cross-platform graphics API that allows the editor to run on Vulkan, Metal, and DirectX.
+<h2>Architecture & Technology</h2>
+Velocirust is built on three main pillars:
+Floem UI: A native Rust UI toolkit that provides the layout and widget system.
+Rope Science: A data structure that allows for $O(\log n)$ text manipulation, making it superior for large files.
+WGPU: A cross-platform graphics API that allows the editor to run on Vulkan, Metal, and DirectX.
