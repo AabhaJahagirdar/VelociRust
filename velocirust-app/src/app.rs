@@ -2,7 +2,7 @@
 use std::os::windows::process::CommandExt;
 use std::{
     io::{BufReader, IsTerminal, Read, Write},
-    ops::Range,
+    ops::,
     path::PathBuf,
     process::Stdio,
     rc::Rc,
