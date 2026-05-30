@@ -28,11 +28,11 @@ cargo run --release
 3. Linux Dependencies
 If you are on Linux, you may need to install the following development libraries:
 
-libx11-dev
+libx11-
 
-libwayland-dev
+libwayland-
 
-libasound2-dev
+libasound2-
 
 <h2>Key Features :</h2>
 Native GPU Rendering: Uses wgpu for a hardware-accelerated, high-FPS interface.
