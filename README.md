@@ -1,54 +1,57 @@
+# VelociRust
 
-<h1>Velocirust (code-editor-Rust)</h1>
+## What is VelociRust?
 
-What is this?
-Velocirust is a high-performance code editor built from the ground up in Rust. While most modern editors rely on web technologies, this project uses Floem for the UI and leverages wgpu to handle rendering directly on the GPU. It’s designed using Rope Science to ensure that even massive files remain smooth and responsive.
+VelociRust builds upon the high-performance foundations of Lapce to experiment with localized, real-time developer tools. While most modern editors rely on web-tech resource-heavy shells, this architecture uses the **Floem UI framework** and leverages `wgpu` to handle hardware-accelerated rendering directly on the GPU. 
 
-I’m currently developing this project to explore high-performance GUI architecture and systems programming.
+### My Core Contribution: The Hybrid AI Submodule
+The primary objective of this fork is the implementation of an experimental, thread-safe **Hybrid AI Autocompletion System**:
+* **Local Edge Inference:** Integrates a thread-safe, background async worker that communicates with a local **DeepSeek-R1 (1.5B)** model via an Ollama pipeline.
+* **Asynchronous AI Debouncer:** Implements a custom `DebouncedListener` that monitors keystroke pauses (150ms) to trigger predictive ghost-text generation without blocking the main rendering loop or UI thread.
+* **Cloud Reasoning Bridge:** Hooks into cloud-based LLMs (like Gemini via the ADK-Gemini crate) to handle heavy-lifting tasks like complete file refactoring and structural explanations.
 
-<h2>Quick Start & Installation</h2>
-1. Prerequisites
-To build Aura Edit from source, you need the Rust toolchain. If you don't have it yet, install it via rustup.rs.
+## Key Features
 
-For macOS (M4/M-Series) users:
-Ensure you have the Xcode Command Line Tools installed:
+* **Experimental Hybrid AI:** Intelligent, low-latency code suggestions generated on the fly by local edge models, paired with deep cloud reasoning.
+* **Native GPU Rendering:** Powered by `wgpu` for a hardware-accelerated, fluid interface utilizing Metal, Vulkan, or DirectX.
+* **Rope Science Core:** Utilizes underlying rope data structures to guarantee $O(\log n)$ text manipulation, keeping editing smooth even with massive files.
+* **Intelligent Coding:** Native Language Server Protocol (LSP) support providing autocompletion, diagnostics, and context-aware code actions.
+* **Modal Editing:** First-class Vim-like modal navigation that can be toggled on demand.
+* **WASM Plugin System:** Extensible via isolated sub-modules that compile down to WASI (Rust, C, AssemblyScript).
+* **Integrated Terminal:** Built-in terminal simulation to execute system commands without leaving the GUI environment.
 
-xcode-select --install
+## Quick Start & Installation
 
-2. Building from Source
-Once Rust is installed, you can clone and run the editor immediately:
+### 1. Prerequisites
+To build VelociRust from source, you need the standard Rust toolchain (`rustup.rs`).
 
-# Clone the repository
-git clone https://github.com/AabhaJahagirdar/code-editor-Rust.git
-cd code-editor-Rust
+* **For macOS (M-Series/M4) users:** Ensure Xcode Command Line Tools are active:
+  ```bash
+  xcode-select --install
 
-# Run in release mode for maximum performance
-cargo run --release
+* **For Local AI Capabilities: Install Ollama and pull the completion model:
+  ```bash
+  ollama run deepseek-r1:1.5b
 
-3. Linux Dependencies
-If you are on Linux, you may need to install the following development libraries:
+* **Building from Source
+Clone the repository and run the application wrapper:
 
-libx11-dev
+  ```bash
+  git clone [https://github.com/AabhaJahagirdar/VelociRust.git]   (https://github.com/AabhaJahagirdar/VelociRust.git)
+  cd VelociRust
+  cargo run --release
 
-libwayland-dev
+* **Linux Dependencies
+If compiling on a Linux machine, ensure the following native package dependencies are configured:
+  ```bash
+  # Ubuntu/Debian example
+  sudo apt install libx11-dev libwayland-dev libasound2-dev
 
-libasound2-dev
+* **Architecture Foundations
+  
+VelociRust operates on three structural pillars inherited from the upstream Lapce ecosystem:
+1) Floem UI: A reactive, native Rust widget and layout system built specifically for smooth performance.
+2) Rope Data Structures: Replaces traditional flat array string buffers with node trees, ensuring editing multi-megabyte source files doesn't stall the thread.
+3) Cross-Platform Graphics: Bypasses web-view overhead by compiling instructions straight into GPU operations.
 
-<h2>Key Features :</h2>
-Native GPU Rendering: Uses wgpu for a hardware-accelerated, high-FPS interface.
-
-Intelligent Coding: Built-in LSP support provides autocompletion, diagnostics, and code actions.
-
-Modal Editing: Vim-like modal editing is a first-class citizen and can be toggled easily.
-
-Remote Development: Seamlessly work on remote systems with a local-speed experience.
-
-WASM Plugin System: Write extensions in any language that compiles to WASI (C, Rust, AssemblyScript).
-
-Integrated Terminal: Execute commands and manage your workspace without leaving the editor.
-
-<h2>Architecture & Technology</h2>
-Velocirust is built on three main pillars:
-Floem UI: A native Rust UI toolkit that provides the layout and widget system.
-Rope Science: A data structure that allows for $O(\log n)$ text manipulation, making it superior for large files.
-WGPU: A cross-platform graphics API that allows the editor to run on Vulkan, Metal, and DirectX.
+⚠️ **Important Notice & Credits:** This repository is an educational, non-commercial fork of the open-source [Lapce Text Editor](https://github.com/lapce/lapce). It is built on top of Lapce's original source code architecture as part of a college engineering mini-project to explore systems programming and high-performance GUI development. All original codebase credits, core editor features, and architectural authorship belong entirely to the Lapce team and its open-source contributors.
