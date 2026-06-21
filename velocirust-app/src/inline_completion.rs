@@ -13,20 +13,16 @@ use lsp_types::InsertTextFormat;
 
 use crate::{config::VelocirustConfig, doc::Doc, editor::EditorData, snippet::Snippet};
 
-// TODO: we could integrate completion lens with this, so it is considered at the same time
-
 /// Redefinition of lsp types inline completion item with offset range
 #[derive(Debug, Clone)]
 pub struct InlineCompletionItem {
-    /// The text to replace the range with.
     pub insert_text: String,
-    /// Text used to decide if this inline completion should be shown.
     pub filter_text: Option<String>,
-    /// The range (of offsets) to replace  
     pub range: Option<Range<usize>>,
     pub command: Option<lsp_types::Command>,
     pub insert_text_format: Option<InsertTextFormat>,
 }
+
 impl InlineCompletionItem {
     pub fn from_lsp(buffer: &Buffer, item: lsp_types::InlineCompletionItem) -> Self {
         let range = item.range.map(|r| {
@@ -71,9 +67,7 @@ impl InlineCompletionItem {
                     start_offset,
                 )?;
             }
-            _ => {
-                // We don't know how to support this text format
-            }
+            _ => {}
         }
 
         Ok(())
@@ -82,111 +76,114 @@ impl InlineCompletionItem {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum InlineCompletionStatus {
-    /// The inline completion is not active.
     Inactive,
-    /// The inline completion is active and is waiting for the server to respond.
     Started,
-    /// The inline completion is active and has received a response from the server.
     Active,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct InlineCompletionData {
-    pub status: InlineCompletionStatus,
-    /// The active inline completion index in the list of completions.
+    // These are now signals to allow modification via &self (Interior Mutability)
+    pub status: RwSignal<InlineCompletionStatus>,
+    pub items: RwSignal<im::Vector<InlineCompletionItem>>,
     pub active: RwSignal<usize>,
-    pub items: im::Vector<InlineCompletionItem>,
-    pub start_offset: usize,
-    pub path: PathBuf,
+    pub start_offset: RwSignal<usize>,
+    pub path: RwSignal<PathBuf>,
+    pub is_fetching: RwSignal<bool>,
 }
+
 impl InlineCompletionData {
     pub fn new(cx: Scope) -> Self {
         Self {
-            status: InlineCompletionStatus::Inactive,
+            status: cx.create_rw_signal(InlineCompletionStatus::Inactive),
             active: cx.create_rw_signal(0),
-            items: im::vector![],
-            start_offset: 0,
-            path: PathBuf::new(),
+            items: cx.create_rw_signal(im::vector![]),
+            start_offset: cx.create_rw_signal(0),
+            path: cx.create_rw_signal(PathBuf::new()),
+            is_fetching: cx.create_rw_signal(false),
         }
     }
 
-    pub fn current_item(&self) -> Option<&InlineCompletionItem> {
+    pub fn current_item(&self) -> Option<InlineCompletionItem> {
         let active = self.active.get_untracked();
-        self.items.get(active)
+        self.items.with_untracked(|items| items.get(active).cloned())
     }
 
-    pub fn next(&mut self) {
-        if !self.items.is_empty() {
-            let next_index = (self.active.get_untracked() + 1) % self.items.len();
+    pub fn next(&self) {
+        let len = self.items.with_untracked(|i| i.len());
+        if len > 0 {
+            let next_index = (self.active.get_untracked() + 1) % len;
             self.active.set(next_index);
         }
     }
 
-    pub fn previous(&mut self) {
-        if !self.items.is_empty() {
-            let prev_index = if self.active.get_untracked() == 0 {
-                self.items.len() - 1
-            } else {
-                self.active.get_untracked() - 1
-            };
+    pub fn previous(&self) {
+        let len = self.items.with_untracked(|i| i.len());
+        if len > 0 {
+            let current = self.active.get_untracked();
+            let prev_index = if current == 0 { len - 1 } else { current - 1 };
             self.active.set(prev_index);
         }
     }
 
-    pub fn cancel(&mut self) {
-        if self.status == InlineCompletionStatus::Inactive {
+    pub fn cancel(&self) {
+        if self.status.get_untracked() == InlineCompletionStatus::Inactive {
             return;
         }
 
-        self.items.clear();
-        self.status = InlineCompletionStatus::Inactive;
+        batch(|| {
+            self.items.update(|i| i.clear());
+            self.status.set(InlineCompletionStatus::Inactive);
+            self.is_fetching.set(false);
+        });
     }
 
-    /// Set the items for the inline completion.  
-    /// Sets `active` to `0` and `status` to `InlineCompletionStatus::Active`.
     pub fn set_items(
-        &mut self,
+        &self,
         items: im::Vector<InlineCompletionItem>,
         start_offset: usize,
         path: PathBuf,
     ) {
         batch(|| {
-            self.items = items;
+            self.items.set(items);
             self.active.set(0);
-            self.status = InlineCompletionStatus::Active;
-            self.start_offset = start_offset;
-            self.path = path;
+            self.status.set(InlineCompletionStatus::Active);
+            self.start_offset.set(start_offset);
+            self.path.set(path);
+            self.is_fetching.set(false);
         });
     }
 
     pub fn update_doc(&self, doc: &Doc, offset: usize) {
-        if self.status != InlineCompletionStatus::Active {
+        if self.status.get_untracked() != InlineCompletionStatus::Active {
             doc.clear_inline_completion();
             return;
         }
 
-        if self.items.is_empty() {
+        let items_len = self.items.with_untracked(|i| i.len());
+        if items_len == 0 {
             doc.clear_inline_completion();
             return;
         }
 
         let active = self.active.get_untracked();
-        let active = if active >= self.items.len() {
+        let active = if active >= items_len {
             self.active.set(0);
             0
         } else {
             active
         };
 
-        let item = &self.items[active];
-        let text = item.insert_text.clone();
-
-        // TODO: is range really meant to be used for this?
-        let offset = item.range.as_ref().map(|r| r.start).unwrap_or(offset);
-        let (line, col) = doc
-            .buffer
-            .with_untracked(|buffer| buffer.offset_to_line_col(offset));
-        doc.set_inline_completion(text, line, col);
+        self.items.with_untracked(|items| {
+            if let Some(item) = items.get(active) {
+                let text = item.insert_text.clone();
+                let offset = item.range.as_ref().map(|r| r.start).unwrap_or(offset);
+                let (line, col) = doc
+                    .buffer
+                    .with_untracked(|buffer| buffer.offset_to_line_col(offset));
+                doc.set_inline_completion(text, line, col);
+            }
+        });
     }
 
     pub fn update_inline_completion(
@@ -203,13 +200,13 @@ impl InlineCompletionData {
         let text = doc.buffer.with_untracked(|buffer| buffer.text().clone());
         let text = RopeTextRef::new(&text);
         let Some(item) = self.current_item() else {
-            // TODO(minor): should we cancel completion
             return;
         };
 
+        let start_offset = self.start_offset.get_untracked();
         let completion = doc.inline_completion.with_untracked(|cur| {
             let cur = cur.as_deref();
-            inline_completion_text(text, self.start_offset, cursor_offset, item, cur)
+            inline_completion_text(text, start_offset, cursor_offset, &item, cur)
         });
 
         match completion {
@@ -218,7 +215,7 @@ impl InlineCompletionData {
             }
             ICompletionRes::Unchanged => {}
             ICompletionRes::Set(new, shift) => {
-                let offset = self.start_offset + shift;
+                let offset = start_offset + shift;
                 let (line, col) = text.offset_to_line_col(offset);
                 doc.set_inline_completion(new, line, col);
             }
@@ -232,7 +229,6 @@ enum ICompletionRes {
     Set(String, usize),
 }
 
-/// Get the text of the inline completion item  
 fn inline_completion_text(
     rope_text: impl RopeText,
     start_offset: usize,
@@ -244,13 +240,10 @@ fn inline_completion_text(
         .insert_text_format
         .unwrap_or(InsertTextFormat::PLAIN_TEXT);
 
-    // TODO: is this check correct? I mostly copied it from completion lens
     let cursor_prev_offset = rope_text.prev_code_boundary(cursor_offset);
     if let Some(range) = &item.range {
         let edit_start = range.start;
 
-        // If the start of the edit isn't where the cursor currently is, and is not at the start of
-        // the inline completion, then we ignore it.
         if cursor_prev_offset != edit_start && start_offset != edit_start {
             return ICompletionRes::Hide;
         }
@@ -262,20 +255,16 @@ fn inline_completion_text(
             let Ok(snippet) = Snippet::from_str(&item.insert_text) else {
                 return ICompletionRes::Hide;
             };
-            let text = snippet.text();
-
-            Cow::Owned(text)
+            Cow::Owned(snippet.text())
         }
         _ => {
-            // We don't know how to support this text format
             return ICompletionRes::Hide;
         }
     };
 
     let range = start_offset..rope_text.offset_line_end(start_offset, true);
     let prefix = rope_text.slice_to_cow(range);
-    // We strip the prefix of the current input from the label.
-    // So that, for example `p` with a completion of `println` will show `rintln`.
+    
     let Some(text) = text.strip_prefix(prefix.as_ref()) else {
         return ICompletionRes::Hide;
     };
