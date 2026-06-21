@@ -1,47 +1,25 @@
-# How to contribute
-Thank you for your interest in contributing to Velocirust! No contribution is too small and we consider _all_ contributions to the project. There are many ways to contribute (a few are listed here) but if you think of something else, join us on [Discord](https://discord.gg/n8tGJ6Rn6D) or let us know via an [issue](https://github.com/velocirust/velocirust/issues).
+# Contributing to VelociRust
 
-## Questions
+Thank you for your interest in VelociRust! This repository is an educational, non-commercial fork of the open-source Lapce Text Editor, built as a project to explore systems programming, Rust GUI performance, and hybrid AI implementation.
 
-We're always around hanging on our [Discord](https://discord.gg/n8tGJ6Rn6D) server but if you're only participating on GitHub, you can open a [Discussion](https://github.com/velocirust/velocirust/discussions)
 
-## Feature Requests
+## Questions & Discussions
 
-A feature request is _editor behaviour that you want to have included in Velocirust_. We track feature requests on GitHub via [issues](https://github.com/velocirust/velocirust/issues). There are generally few kinds of features:
+If you have questions about the custom hybrid AI submodule, the asynchronous debouncer logic, or how the codebase functions, please feel free to open a thread on the **GitHub Discussions** tab of this repository.
 
-### Core features
+## Bug Reports & Feature Ideas
 
-A feature more suited to the core development of Velocirust. If this is the case please make a suggestion in an [issue](https://github.com/velocirust/velocirust/issues).
+If you encounter issues while running VelociRust on your machine, or have ideas for improving the local inference bridge, please open an issue directly on the [VelociRust GitHub Issues tracker](https://github.com/AabhaJahagirdar/VelociRust/issues).
 
-### Programming language support (autocompletion/intellisense/formatting)
+Before opening a new issue, please do a quick search through existing ones to make sure it hasn't already been reported.
 
-A feature that relates to specific programming language or development tool that provides intellisense, or various editor commands.
-We do not track plugins development here, each plugin should have own issue tracker with eventual issues linked/referenced to main Velocirust issue tracker.
-
-### Syntax highlighting
-
-There is main issue for tracking syntax highlighting grammars support at https://github.com/velocirust/velocirust/issues/272.
-
----
-
-To reduce the number of duplicate requests, please search through the issues to see if something has already been suggested. If a feature you want has been suggested, then comment on that issue to let us know it's popular. You can use emoji-reactions to show us just how popular.
-
-## Bug Reports
-
-Bugs should also be reported on GitHub via [issues](https://github.com/velocirust/velocirust/issues). This allows us to track them and see how prevalent they are.
-
-If you encounter a bug when using Velocirust, check the issues to see if anyone else has encountered it. If it already exists, you can use emoji reactions so we can see community interest in specific issues and how important they are.
-
-Please follow the rule of [NoPlusOne](https://github.com/golang/go/wiki/NoPlusOne)
 
 ## Pull Requests
 
-If you want to write some code, develop the documentation, or otherwise work on a certain feature or bug, let us know by replying to or creating an [issue](https://github.com/velocirust/velocirust/issues).
+If you want to submit a bug fix or documentation improvement, feel free to open a Pull Request! To ensure the project remains stable and clean:
 
-Run `cargo fmt --all` and `cargo clippy` on your code before submitting pull requests and fix any issues; this makes sure that the CI runs only fail on genuine build errors and not formatting/Clippy lints.
+1. **Format your code:** Run `cargo fmt --all` before committing.
+2. **Lint check:** Run `cargo clippy` to ensure there are no active compiler warnings or optimization issues.
+3. **Keep it focused:** Make sure your pull request targets a specific fix or clear enhancement.
 
-We are currently in the process of improving the documentation for new developers/code contributors. Feel free to get started, or post a message on [Discord](https://discord.gg/n8tGJ6Rn6D) to see what can be done.
-
-## Contact
-
-As always, if you have any questions or are just not sure where to start, post a message into the [Discord](https://discord.gg/n8tGJ6Rn6D) server. We suggest you start here as it is the most popular way for Velocirust's contributors and users to communicate.
+Thank you for exploring this project!
