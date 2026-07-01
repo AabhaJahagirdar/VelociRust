@@ -36,7 +36,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
       - name: Install dependencies on Ubuntu
         if: startsWith(matrix.os, 'ubuntu')
@@ -55,7 +55,7 @@ jobs:
       - name: Build
         run: cargo build --profile ci --frozen
 
-      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: lapce-${{ matrix.os }}
           path: |
@@ -77,7 +77,7 @@ jobs:
     name: Formatting and spellchecking
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
       - name: Update toolchain & add rustfmt
         run: |
@@ -88,7 +88,7 @@ jobs:
         run: cargo fmt --all --check
 
       - name: Spell Check Repo
-        uses: crate-ci/typos@02ea592e44b3a53c302f697cddca7641cd051c3d
+        uses: crate-ci/typos@bee27e3a4fd1ea2111cf90ab89cd076c870fce14
 
   clippy:
     name: Clippy on ${{ matrix.os }}
@@ -98,7 +98,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
       - name: Update toolchain & add clippy
         run: |
