@@ -1,6 +1,6 @@
 [package]
 name         = "velocirust-app"
-license      = { workspace = true }
+license      = { workspace = false }
 version      = { workspace = true }
 authors      = { workspace = true }
 edition      = { workspace = true }
