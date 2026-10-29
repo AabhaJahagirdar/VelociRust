@@ -1,6 +1,6 @@
 # VelociRust
 
-## What is VelociRust?
+## What is VelociRust
 
 VelociRust builds upon the high-performance foundations of Lapce to experiment with localized, real-time developer tools. While most modern editors rely on web-tech resource-heavy shells, this architecture uses the **Floem UI framework** and leverages `wgpu` to handle hardware-accelerated rendering directly on the GPU. 
 
